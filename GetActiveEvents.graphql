@@ -1,0 +1,33 @@
+query GetMachineActiveEvents {
+  machine {
+    id
+    unit {
+      id
+      events(active: true) {
+        details {
+          ... on CanErrorEvent {
+            suspectParameterNumber
+          }
+          ... on DamageReportEvent {
+            state
+          }
+          ... on PrecheckEvent {
+            count
+            failedCount
+          }
+          ... on ServiceKmEvent {
+            serviceKm
+            currentKm
+          }
+          ... on ServiceHourEvent {
+            serviceRun
+            currentRun
+          }
+          ... on ServiceCalendarEvent {
+            date
+          }
+        }
+      }
+    }
+  }
+}

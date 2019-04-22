@@ -1,0 +1,74 @@
+schema {
+  query: Query
+}
+
+type Query {
+  machine: Machine
+}
+
+type Machine {
+  id: Int!
+  unit: Unit
+}
+
+type Unit {
+  id: Int!
+  events(active: Boolean!): [UnitEvent!]
+}
+
+enum UnitEventType {
+  DAMAGE_REPORT
+  PRE_CHECK
+  SERVICE_KM
+  SERVICE_HOUR
+  SERVICE_HOUR2
+  SERVICE_CALENDAR
+  CAN_ERROR
+  UNKNOWN
+}
+
+type UnitEvent {
+  id: String!
+  details: UnitEventDetails
+}
+
+union UnitEventDetails =
+    DamageReportEvent
+  | CanErrorEvent
+  | PrecheckEvent
+  | ServiceCalendarEvent
+  | ServiceHourEvent
+  | ServiceKmEvent
+
+type DamageReportEvent {
+  state: Int
+}
+
+type CanErrorEvent {
+  id: String
+  canErrorId: String
+  suspectParameterNumber: Int
+  failureModeIdentifier: Int
+  canbusNumber: Int
+  sourceAddress: Int
+  unitId: Int
+}
+
+type PrecheckEvent {
+  count: Int
+  failedCount: Int
+}
+
+type ServiceCalendarEvent {
+  date: String
+}
+
+type ServiceHourEvent {
+  serviceRun: Int
+  currentRun: Int
+}
+
+type ServiceKmEvent {
+  serviceKm: Int
+  currentKm: Int
+}
